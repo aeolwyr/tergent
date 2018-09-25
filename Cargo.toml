@@ -1,0 +1,12 @@
+[package]
+name = "tergent"
+version = "0.1.0"
+authors = ["Kaan Karaagacli <kaankaraagacli@gmail.com>"]
+
+[dependencies]
+serde_json = "1.0"
+hex = "0.3.2"
+rand = "0.5.5"
+byteorder = "1"
+base64 = "0.9.3"
+signal-hook = "0.1.5"
