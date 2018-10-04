@@ -47,3 +47,7 @@ How do I...
 * **delete a key**: use `termux-keystore delete`
 * **import a key**: not supported, generate a new key instead
 
+Auto-locking
+------------
+tergent does not yet support locking the agent with a password.  
+However, Android [provides a mechanism](https://developer.android.com/training/articles/keystore#UserAuthentication) to automatically lock the keys after a specified time has passed since the last device unlock. To take advantage of this feature, use the "-u" flag while generating the keys, e.g. `termux-keystore generate myAlias -u 10` for a 10-second lock. In this case, the keys are usable only for 10 seconds after the phone is unlocked. To unlock the keys after this time has passed, simply re-lock and unlock your device again.
