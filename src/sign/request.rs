@@ -26,14 +26,15 @@ impl<'a> SignRequest<'a> {
 
     /// Returns the tuple of keystore name and ssh name for this key.
     fn name(&self) -> (&'static str, &'static str) {
-        // TODO: handle invalid flags gracefully
         match self.key.algorithm {
             Algorithm::Rsa => {
-                match self.flags {
-                    0 => ("SHA1withRSA", "ssh-rsa"),
-                    SSH_AGENT_RSA_SHA2_256 => ("SHA256withRSA", "rsa-sha2-256"),
-                    SSH_AGENT_RSA_SHA2_512 => ("SHA512withRSA", "rsa-sha2-512"),
-                    f => panic!("Unknown flag {}", f),
+                // other implementations also have this order
+                if self.flags & SSH_AGENT_RSA_SHA2_256 != 0 {
+                    ("SHA256withRSA", "rsa-sha2-256")
+                } else if self.flags & SSH_AGENT_RSA_SHA2_512 != 0 {
+                    ("SHA512withRSA", "rsa-sha2-512")
+                } else {
+                    ("SHA1withRSA", "ssh-rsa")
                 }
             },
             Algorithm::Ec(ref curve) => {
