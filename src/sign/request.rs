@@ -24,51 +24,37 @@ impl<'a> SignRequest<'a> {
         &self.data
     }
 
-    // TODO: these two functions below are too similiar...
-
-    /// Returns the name to be used when communicating with the
-    /// Android keystore.
-    pub fn keystore_name(&self) -> &'static str {
+    /// Returns the tuple of keystore name and ssh name for this key.
+    fn name(&self) -> (&'static str, &'static str) {
         // TODO: handle invalid flags gracefully
         match self.key.algorithm {
             Algorithm::Rsa => {
                 match self.flags {
-                    0 => "SHA1withRSA",
-                    SSH_AGENT_RSA_SHA2_256 => "SHA256withRSA",
-                    SSH_AGENT_RSA_SHA2_512 => "SHA512withRSA",
+                    0 => ("SHA1withRSA", "ssh-rsa"),
+                    SSH_AGENT_RSA_SHA2_256 => ("SHA256withRSA", "rsa-sha2-256"),
+                    SSH_AGENT_RSA_SHA2_512 => ("SHA512withRSA", "rsa-sha2-512"),
                     f => panic!("Unknown flag {}", f),
                 }
             },
             Algorithm::Ec(ref curve) => {
                 match curve {
-                    Curve::P256 => "SHA256withECDSA",
-                    Curve::P384 => "SHA386withECDSA",
-                    Curve::P521 => "SHA512withECDSA",
+                    Curve::P256 => ("SHA256withECDSA", "ecdsa-sha2-nistp256"),
+                    Curve::P384 => ("SHA386withECDSA", "ecdsa-sha2-nistp384"),
+                    Curve::P521 => ("SHA512withECDSA", "ecdsa-sha2-nistp521"),
                 }
             },
         }
     }
 
+    /// Returns the name to be used when communicating with the
+    /// Android keystore.
+    pub fn keystore_name(&self) -> &'static str {
+        self.name().0
+    }
+
     /// Returns the name to be used when communicating with an
     /// ssh-agent client.
     pub fn ssh_name(&self) -> &'static str {
-        // TODO: handle invalid flags gracefully
-        match self.key.algorithm {
-            Algorithm::Rsa => {
-                match self.flags {
-                    0 => "ssh-rsa",
-                    SSH_AGENT_RSA_SHA2_256 => "rsa-sha2-256",
-                    SSH_AGENT_RSA_SHA2_512 => "rsa-sha2-512",
-                    f => panic!("Unknown flag {}", f),
-                }
-            },
-            Algorithm::Ec(ref curve) => {
-                match curve {
-                    Curve::P256 => "ecdsa-sha2-nistp256",
-                    Curve::P384 => "ecdsa-sha2-nistp384",
-                    Curve::P521 => "ecdsa-sha2-nistp521",
-                }
-            },
-        }
+        self.name().1
     }
 }
