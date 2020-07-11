@@ -37,7 +37,7 @@ Usage
 
 7. Connect to your server using the usual command `ssh example.com`.
 
-You will need to run the command `eval $(tergent)` every time you start up the terminal. This command can be included in .bash_profile (or a similar script) for convenience, followed by `trap 'kill $SSH_AGENT_PID' EXIT`.
+You will need to run the command `eval $(tergent)` every time you start up the terminal. This command can be included in .bash_profile (or a similar script) for convenience, followed by `trap 'kill $SSH_AGENT_PID' EXIT`, or you can copy tergent-autorun.sh to your $PREFIX/etc/profile.d/.
 
 How do I...
 -----------
