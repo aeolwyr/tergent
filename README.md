@@ -21,8 +21,8 @@ Alternatively, you can download a precompiled deb package from the releases page
 
 Upgrading from 0.1
 ------------------
-Keys generated for tergent 0.1 will not work for the latest version. If you do not want to lose access to your server, generate new keys using step 2 below and copy it to your server before upgrading.
-If you have already upgraded, you can download a copy of an older version from the releases page.
+Keys generated for tergent 0.1 will not work for the latest version. If you do not want to lose access to your server, generate new keys using step 2 below and copy it to your server before upgrading.  
+If you have already upgraded, you can download a copy of an older version from the releases page.  
 After upgrading, any modifications made in `.bash_profile` or similar files should be removed. There is no need to keep running a background process anymore.
 
 Usage
