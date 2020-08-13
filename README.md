@@ -76,3 +76,5 @@ Auto-locking
 ------------
 tergent does not provide password protected sessions yet.
 However, Android [provides a mechanism](https://developer.android.com/training/articles/keystore#UserAuthentication) to automatically lock the keys after a specified time has passed since the last device unlock. To take advantage of this feature, use the flag while generating the keys, e.g. `--ei validity 10` for a 10-second lock. In this case, the keys are usable only for 10 seconds after the phone is unlocked. To unlock the keys after this time has passed, simply re-lock and unlock your device again.
+
+Alternatively, you can invoke a biometric prompt (fingerprint or face unlock) which might also reset this timer depending on your device. termux includes the `termux-fingerprint` command which can be used for this purpose.
