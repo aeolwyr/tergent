@@ -17,7 +17,11 @@ You will need to configure cargo with the correct locations for "ar" and "linker
 [https://mozilla.github.io/firefox-browser-architecture/experiments/2017-09-21-rust-on-android.html](https://mozilla.github.io/firefox-browser-architecture/experiments/2017-09-21-rust-on-android.html)  
 Then this project can be compiled with the command `cargo build --target=aarch64-linux-android` (or any other Android target).
 
-Alternatively, you can download a precompiled deb package from the releases page.
+Alternatively, you can download a precompiled deb package from the releases page, or install it from the termux package repo:
+
+```
+pkg i tergent
+```
 
 Upgrading from 0.1
 ------------------
@@ -77,4 +81,4 @@ Auto-locking
 tergent does not provide password protected sessions yet.
 However, Android [provides a mechanism](https://developer.android.com/training/articles/keystore#UserAuthentication) to automatically lock the keys after a specified time has passed since the last device unlock. To take advantage of this feature, use the flag while generating the keys, e.g. `--ei validity 10` for a 10-second lock. In this case, the keys are usable only for 10 seconds after the phone is unlocked. To unlock the keys after this time has passed, simply re-lock and unlock your device again.
 
-Alternatively, you can invoke a biometric prompt (fingerprint or face unlock) which might also reset this timer depending on your device. termux includes the `termux-fingerprint` command which can be used for this purpose.
+Alternatively, you can invoke a biometric prompt (fingerprint or face unlock) which might also reset this timer depending on your device. Tergent will automatically try invoking the termux Fingerprint API to prompt biometric authentication.
