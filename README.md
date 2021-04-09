@@ -32,7 +32,7 @@ Usage
 2. As of now `termux-keystore` cannot generate keys compatible with tergent. Use one of these commands instead:
   - To generate an RSA key:
 ```
-/data/data/com.termux/files/usr/libexec/termux-api Keystore -e command generate -e alias ALIAS -e algorithm ALGORITHM --ei purposes 12 --esa digests NONE,SHA-1,SHA-256,SHA-384,SHA-512 --ei size SIZE --ei validity VALIDITY
+/data/data/com.termux/files/usr/libexec/termux-api Keystore -e command generate -e alias ALIAS -e algorithm RSA --ei purposes 12 --esa digests NONE,SHA-1,SHA-256,SHA-384,SHA-512 --ei size SIZE --ei validity VALIDITY
 ```
   - To generate an EC key:
 ```
