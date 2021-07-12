@@ -4,6 +4,7 @@ use std::os::raw::c_ulong;
 use num_derive::{FromPrimitive, ToPrimitive};
 use num_traits::{FromPrimitive, ToPrimitive};
 
+#[repr(u64)]
 #[derive(Debug, FromPrimitive, ToPrimitive)]
 pub enum ObjectClass {
     Data = 0,
