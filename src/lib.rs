@@ -434,7 +434,7 @@ pub extern "C" fn C_FindObjectsInit(
         match AttributeType::try_from(template.type_) {
             Ok(AttributeType::Class) => {
                 // We only support searching for public/private keys for now.
-                let value = template.value as *mut u64;
+                let value = template.value as *mut c_ulong;
                 let class = unsafe { *value };
                 if let Ok(ObjectClass::PublicKey) | Ok(ObjectClass::PrivateKey) = class.try_into() {
                     find_keys = true;
