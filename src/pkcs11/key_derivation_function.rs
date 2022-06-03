@@ -17,13 +17,29 @@ pub enum KeyDerivationFunction {
     CpdiversifyKdf = 9,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for KeyDerivationFunction {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        KeyDerivationFunction::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<KeyDerivationFunction> for c_ulong {
+    type Error = ();
+    fn try_from(value: KeyDerivationFunction) -> Result<Self, Self::Error> {
+        KeyDerivationFunction::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for KeyDerivationFunction {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         KeyDerivationFunction::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<KeyDerivationFunction> for c_ulong {
     type Error = ();
     fn try_from(value: KeyDerivationFunction) -> Result<Self, Self::Error> {

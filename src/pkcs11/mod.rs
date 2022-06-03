@@ -3,6 +3,7 @@
 //! however it is now heavily modified.
 
 use std::convert::TryInto;
+use std::os::raw::c_ulong;
 use std::slice;
 
 pub const CRYPTOKI_VERSION_MAJOR: u32 = 2;
@@ -59,7 +60,7 @@ impl Attribute {
     /// As attribute does not own the value field (instead it contains a pointer)
     /// any safety considerations regarding pointers apply.
     pub fn set_value(&mut self, value: &[u8]) -> Option<()> {
-        let len: u64 = value.len().try_into().ok()?;
+        let len: c_ulong = value.len().try_into().ok()?;
         if self.value.is_null() {
             self.value_len = len;
             return Some(());
@@ -82,8 +83,8 @@ impl Attribute {
     /// # Safety
     /// Attribute values are pointers, therefore any safety considerations
     /// regarding pointers apply.
-    pub fn set_value_single(&mut self, value: u64) {
-        let val = self.value as *mut u64;
+    pub fn set_value_single(&mut self, value: c_ulong) {
+        let val = self.value as *mut c_ulong;
         unsafe {
             *val = value;
         }

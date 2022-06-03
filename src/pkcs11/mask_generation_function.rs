@@ -13,13 +13,30 @@ pub enum MaskGenerationFunction {
     Mgf1Sha224 = 5,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for MaskGenerationFunction {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        MaskGenerationFunction::from_u32(value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<MaskGenerationFunction> for c_ulong {
+    type Error = ();
+    fn try_from(value: MaskGenerationFunction) -> Result<Self, Self::Error> {
+        MaskGenerationFunction::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for MaskGenerationFunction {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         MaskGenerationFunction::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<MaskGenerationFunction> for c_ulong {
     type Error = ();
     fn try_from(value: MaskGenerationFunction) -> Result<Self, Self::Error> {

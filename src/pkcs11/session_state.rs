@@ -13,13 +13,29 @@ pub enum SessionState {
     RwSoFunctions = 4,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for SessionState {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        SessionState::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<SessionState> for c_ulong {
+    type Error = ();
+    fn try_from(value: SessionState) -> Result<Self, Self::Error> {
+        SessionState::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for SessionState {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         SessionState::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<SessionState> for c_ulong {
     type Error = ();
     fn try_from(value: SessionState) -> Result<Self, Self::Error> {
