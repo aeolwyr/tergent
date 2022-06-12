@@ -27,7 +27,7 @@ After upgrading, any modifications made in `.bash_profile` or similar files shou
 
 Usage
 -----
-1. Make sure you have the latest version of [Termux:API](https://play.google.com/store/apps/details?id=com.termux.api) installed. Don't forget to install the scripts using the command `pkg install termux-api`.
+1. Make sure you have the latest version of [Termux:API](https://f-droid.org/en/packages/com.termux.api/) installed. Don't forget to install the scripts using the command `pkg install termux-api`.
 
 2. As of now `termux-keystore` cannot generate keys compatible with tergent. Use one of these commands instead:
   - To generate an RSA key:
