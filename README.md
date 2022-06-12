@@ -29,18 +29,17 @@ Usage
 -----
 1. Make sure you have the latest version of [Termux:API](https://f-droid.org/en/packages/com.termux.api/) installed. Don't forget to install the scripts using the command `pkg install termux-api`.
 
-2. As of now `termux-keystore` cannot generate keys compatible with tergent. Use one of these commands instead:
+2. Generate a key through `termux-keystore`:
   - To generate an RSA key:
 ```
-/data/data/com.termux/files/usr/libexec/termux-api Keystore -e command generate -e alias ALIAS -e algorithm ALGORITHM --ei purposes 12 --esa digests NONE,SHA-1,SHA-256,SHA-384,SHA-512 --ei size SIZE --ei validity VALIDITY
+termux-keystore generate ALIAS -a RSA -s SIZE -u VALIDITY
 ```
   - To generate an EC key:
 ```
-/data/data/com.termux/files/usr/libexec/termux-api Keystore -e command generate -e alias ALIAS -e algorithm EC --ei purposes 12 --esa digests NONE,SHA-1,SHA-256,SHA-384,SHA-512 -e curve CURVE --ei validity VALIDITY
+termux-keystore generate ALIAS -a EC -s SIZE -u VALIDITY
 ```
   - ALIAS is the name you want to give to the key.
-  - SIZE can be 2048, 3072 or 4096, this is only used for RSA keys.
-  - CURVE can be secp256r1, secp384r1 or secp521r1, this determines the EC key size.
+  - SIZE can be one of 2048, 3072, 4096 for an RSA key, or one of 256, 384, 521 for and EC key.
   - VALIDITY can be used for user validity, see Auto-locking below. Use 0 to disable.
 
 3. List the keys to verify using the standard ssh tool: `ssh-keygen -D $PREFIX/lib/libtergent.so`. Even though the command is called `ssh-keygen`, `-D` switch lists cryptoki keys instead of generating new keys.
