@@ -12,13 +12,29 @@ pub enum CertificateCategory {
     OtherEntity = 3,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for CertificateCategory {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        CertificateCategory::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<CertificateCategory> for c_ulong {
+    type Error = ();
+    fn try_from(value: CertificateCategory) -> Result<Self, Self::Error> {
+        CertificateCategory::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for CertificateCategory {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         CertificateCategory::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<CertificateCategory> for c_ulong {
     type Error = ();
     fn try_from(value: CertificateCategory) -> Result<Self, Self::Error> {

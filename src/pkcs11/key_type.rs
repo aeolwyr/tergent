@@ -4,6 +4,7 @@ use std::os::raw::c_ulong;
 use num_derive::{FromPrimitive, ToPrimitive};
 use num_traits::{FromPrimitive, ToPrimitive};
 
+#[repr(u64)]
 #[derive(Debug, FromPrimitive, ToPrimitive)]
 pub enum KeyType {
     Rsa = 0x0000,
@@ -50,13 +51,29 @@ pub enum KeyType {
     VendorDefined = 0x80000000,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for KeyType {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        KeyType::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<KeyType> for c_ulong {
+    type Error = ();
+    fn try_from(value: KeyType) -> Result<Self, Self::Error> {
+        KeyType::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for KeyType {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         KeyType::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<KeyType> for c_ulong {
     type Error = ();
     fn try_from(value: KeyType) -> Result<Self, Self::Error> {

@@ -4,6 +4,7 @@ use std::os::raw::c_ulong;
 use num_derive::{FromPrimitive, ToPrimitive};
 use num_traits::{FromPrimitive, ToPrimitive};
 
+#[repr(u64)]
 #[derive(Debug, FromPrimitive, ToPrimitive)]
 pub enum MechanismType {
     RsaPkcsKeyPairGen = 0x0000,
@@ -332,13 +333,29 @@ pub enum MechanismType {
     VendorDefined = 0x80000000,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for MechanismType {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        MechanismType::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<MechanismType> for c_ulong {
+    type Error = ();
+    fn try_from(value: MechanismType) -> Result<Self, Self::Error> {
+        MechanismType::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for MechanismType {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         MechanismType::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<MechanismType> for c_ulong {
     type Error = ();
     fn try_from(value: MechanismType) -> Result<Self, Self::Error> {

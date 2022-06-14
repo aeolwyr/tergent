@@ -96,7 +96,7 @@ pub extern "C" fn C_GetTokenInfo(slot_id: c_ulong, info: *mut TokenInfo) -> c_ul
             return ReturnValue::GeneralError.try_into().unwrap();
         }
     };
-    let unavailable_information = UNAVAILABLE_INFORMATION as u64;
+    let unavailable_information = UNAVAILABLE_INFORMATION as c_ulong;
 
     let mut token_info = unsafe { &mut *info };
     copy_padded(&mut token_info.label, "tergent");
@@ -328,7 +328,7 @@ pub extern "C" fn C_GetAttributeValue(
         let attribute_type = match AttributeType::try_from(template.type_) {
             Ok(attribute_type) => attribute_type,
             Err(_) => {
-                template.set_value_single(UNAVAILABLE_INFORMATION as u64);
+                template.set_value_single(UNAVAILABLE_INFORMATION as c_ulong);
                 type_invalid = true;
                 continue;
             }
@@ -351,7 +351,7 @@ pub extern "C" fn C_GetAttributeValue(
                 if let Key::Rsa(key) = key {
                     template.set_value(&key.modulus());
                 } else {
-                    template.set_value_single(UNAVAILABLE_INFORMATION as u64);
+                    template.set_value_single(UNAVAILABLE_INFORMATION as c_ulong);
                     type_invalid = true;
                 }
             }
@@ -359,7 +359,7 @@ pub extern "C" fn C_GetAttributeValue(
                 if let Key::Rsa(key) = key {
                     template.set_value(&key.exponent());
                 } else {
-                    template.set_value_single(UNAVAILABLE_INFORMATION as u64);
+                    template.set_value_single(UNAVAILABLE_INFORMATION as c_ulong);
                     type_invalid = true;
                 }
             }
@@ -371,7 +371,7 @@ pub extern "C" fn C_GetAttributeValue(
                         continue;
                     }
                 }
-                template.set_value_single(UNAVAILABLE_INFORMATION as u64);
+                template.set_value_single(UNAVAILABLE_INFORMATION as c_ulong);
                 type_invalid = true;
             }
             AttributeType::EcParams => {
@@ -382,14 +382,14 @@ pub extern "C" fn C_GetAttributeValue(
                         continue;
                     }
                 }
-                template.set_value_single(UNAVAILABLE_INFORMATION as u64);
+                template.set_value_single(UNAVAILABLE_INFORMATION as c_ulong);
                 type_invalid = true;
             }
             AttributeType::AlwaysAuthenticate => {
                 template.set_value_single(0);
             }
             _ => {
-                template.set_value_single(UNAVAILABLE_INFORMATION as u64);
+                template.set_value_single(UNAVAILABLE_INFORMATION as c_ulong);
                 type_invalid = true;
             }
         };
@@ -434,7 +434,7 @@ pub extern "C" fn C_FindObjectsInit(
         match AttributeType::try_from(template.type_) {
             Ok(AttributeType::Class) => {
                 // We only support searching for public/private keys for now.
-                let value = template.value as *mut u64;
+                let value = template.value as *mut c_ulong;
                 let class = unsafe { *value };
                 if let Ok(ObjectClass::PublicKey) | Ok(ObjectClass::PrivateKey) = class.try_into() {
                     find_keys = true;

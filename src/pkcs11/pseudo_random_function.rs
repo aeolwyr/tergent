@@ -16,13 +16,29 @@ pub enum PseudoRandomFunction {
     Pkcs5Pbkd2HmacSha512256 = 8,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for PseudoRandomFunction {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        PseudoRandomFunction::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<PseudoRandomFunction> for c_ulong {
+    type Error = ();
+    fn try_from(value: PseudoRandomFunction) -> Result<Self, Self::Error> {
+        PseudoRandomFunction::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for PseudoRandomFunction {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         PseudoRandomFunction::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<PseudoRandomFunction> for c_ulong {
     type Error = ();
     fn try_from(value: PseudoRandomFunction) -> Result<Self, Self::Error> {

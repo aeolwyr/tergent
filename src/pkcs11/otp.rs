@@ -28,27 +28,57 @@ pub enum Param {
     Mandatory = 2,
 }
 
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for Format {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        Format::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<Format> for c_ulong {
+    type Error = ();
+    fn try_from(value: Format) -> Result<Self, Self::Error> {
+        Format::to_u32(&value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<c_ulong> for Param {
+    type Error = ();
+    fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
+        Param::from_u32(value).ok_or(())
+    }
+}
+#[cfg(target_pointer_width = "32")]
+impl TryFrom<Param> for c_ulong {
+    type Error = ();
+    fn try_from(value: Param) -> Result<Self, Self::Error> {
+        Param::to_u32(&value).ok_or(())
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for Format {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         Format::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<Format> for c_ulong {
     type Error = ();
     fn try_from(value: Format) -> Result<Self, Self::Error> {
         Format::to_u64(&value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<c_ulong> for Param {
     type Error = ();
     fn try_from(value: c_ulong) -> Result<Self, Self::Error> {
         Param::from_u64(value).ok_or(())
     }
 }
-
+#[cfg(target_pointer_width = "64")]
 impl TryFrom<Param> for c_ulong {
     type Error = ();
     fn try_from(value: Param) -> Result<Self, Self::Error> {
